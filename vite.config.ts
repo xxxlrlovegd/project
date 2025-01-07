@@ -4,4 +4,10 @@ import vue from '@vitejs/plugin-vue'
 // https://vitejs.dev/config/
 export default defineConfig({
   plugins: [vue()],
+  base: "./",
+  build: {
+    sourcemap: false,
+    minify: "terser",
+    chunkSizeWarningLimit: 1500,
+  },
 })
