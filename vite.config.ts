@@ -17,7 +17,7 @@ export default defineConfig({
     },
     rollupOptions: {
       output: {
-        manualChunks(id) {
+        manualChunks(id:string) {
           if (id.includes("node_modules")) {
             return id
               .toString()
@@ -26,7 +26,7 @@ export default defineConfig({
               .toString();
           }
         },
-        chunkFileNames: (chunkInfo) => {
+        chunkFileNames: (chunkInfo:any) => {
           const facadeModuleId = chunkInfo.facadeModuleId
             ? chunkInfo.facadeModuleId.split("/")
             : [];
