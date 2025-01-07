@@ -7,17 +7,17 @@ export default defineConfig({
   base: "./",
   build: {
     sourcemap: false,
-    minify: "terser",
+    minify: true,
     chunkSizeWarningLimit: 1500,
     terserOptions: {
       compress: {
-        drop_console: true,
-        drop_debugger: true
+        drop_console: true, // 删除 console
+        drop_debugger: true // 删除 debugger
       }
     },
     rollupOptions: {
       output: {
-        manualChunks(id:string) {
+        manualChunks(id: string) {
           if (id.includes("node_modules")) {
             return id
               .toString()
@@ -25,8 +25,12 @@ export default defineConfig({
               .split("/")[0]
               .toString();
           }
+           // 这里可以根据需要添加更多的手动分块逻辑
+           if (id.includes("src/components")) {
+            return "components"; // 将所有组件放入一个单独的 chunk
+          }
         },
-        chunkFileNames: (chunkInfo:any) => {
+        chunkFileNames: (chunkInfo: { facadeModuleId: string }) => {
           const facadeModuleId = chunkInfo.facadeModuleId
             ? chunkInfo.facadeModuleId.split("/")
             : [];
@@ -35,6 +39,6 @@ export default defineConfig({
           return `js/${fileName}/[name].[hash].js`;
         }
       }
-    }
+    },
   },
 })
